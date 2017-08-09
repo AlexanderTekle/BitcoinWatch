@@ -10,6 +10,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -25,22 +27,14 @@ import org.json.JSONTokener;
 
 public class HackerNewsGET {
 
+    private TreeMap<Integer, String> sites;
+
     private final String USER_AGENT = "Mozilla/5.0";
-/*
-    public static void main(String[] args) throws Exception {
-
-        HackerNewsGET http = new HackerNewsGET();
-
-        System.out.println("Testing 1 - Send Http GET request");
-        System.out.println(http.sendGet());
-        //String S = http.sendGet();
-        //HttpRequestParser H = new HttpRequestParser();
-        //H.parseRequest(S);
-        //System.out.println("Here " + H.getRequestLine());
 
 
-
-    }*/
+    public HackerNewsGET()
+    {
+    }
 
     // HTTP GET request
     public String sendGet() throws Exception {
@@ -73,18 +67,31 @@ public class HackerNewsGET {
 
         JSONArray hits = j.getJSONArray("hits");
 
-        String ret = "";
-        int i = 1;
+       String ret = "";
+
+        int i = 0;
+        int q = 0;
         while (i < 5 && hits.getJSONObject(i) != null)
         {
             JSONObject article = hits.getJSONObject(i);
-            ret += (i+1) + ". " + article.getString("title") + "\n";
-            ret += "    -" + article.getString("url") + "\n";
-            i++;
+            if (article.getString(("url")) != null) {
+                String newsurl = article.getString("url");
+                String source = "";
+                if (newsurl.contains("www"))
+                    source = newsurl.substring(url.indexOf("//") + 6, newsurl.indexOf(".com")).toUpperCase() + ": ";
+                else
+                    source = newsurl.substring(url.indexOf("//") + 2, newsurl.indexOf(".com")).toUpperCase() + ": ";
+                ret += source + article.getString("title") + "splithere";
+                i++;
+            }
         }
 
-        return ret;
 
+        //JSONObject article = hits.getJSONObject(num);
+        //return article.getString("title");
+
+
+        return ret;
 
     }
 

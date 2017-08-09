@@ -35,7 +35,9 @@ import java.util.List;
 import java.util.Map;
 import android.os.Handler;
 import java.lang.Runnable;
-
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 
 public class MainActivity extends AppCompatActivity  {
@@ -43,6 +45,11 @@ public class MainActivity extends AppCompatActivity  {
     float currentPrice;
     float minPrice;
     float maxPrice;
+
+    private TreeMap<Integer, String> newsURLs;
+    private int[] ids;
+    private String[] titles;
+
     private boolean isBusy = false;//this flag to indicate whether your async task completed or not
     private boolean stop = false;//this flag to indicate whether your button stop clicked
     private Handler handler = new Handler();
@@ -50,9 +57,11 @@ public class MainActivity extends AppCompatActivity  {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        titles = new String[10];
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //ExchangeRates exchange = new ExchangeRates();
+        /*
         btn = (Button) findViewById(R.id.displayButton);
         btn.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
@@ -60,7 +69,9 @@ public class MainActivity extends AppCompatActivity  {
                 myWebLink.setData(Uri.parse("https://blog.coinbase.com/update-on-bitcoin-cash-8a67a7e8dbdf?gi=9f2b07b1e6df"));
                 startActivity(myWebLink);
             }
-        });
+        });*/
+        //ids = new int[]{R.id.Source1, R.id.Source2, R.id.Source3, R.id.Source4, R.id.Source5};
+        ids = new int[]{1,2,3,4,5};
 
         create();
     }
@@ -69,7 +80,6 @@ public class MainActivity extends AppCompatActivity  {
         // detect the view that was "clicked"
         switch (view.getId()) {
             case R.id.displayButton:
-
                 break;
         }
     }
@@ -102,6 +112,21 @@ public class MainActivity extends AppCompatActivity  {
         new UpdateNews().execute();
         new Chart().execute();
         startHandler();
+/*
+        Button temp = (Button) findViewById(R.id.Source1);
+        temp.setText(newsURLs.get(1));
+       /* Button temp3 = (Button) findViewById(ids[2]);
+        temp3.setText(newsURLs.get(ids[2]));*/
+        String problem = "";/*
+        for (Integer x : newsURLs.keySet())
+        {
+                Log.d("issue", problem);
+
+        //problem += x;
+        }
+        Log.d("issue", problem);*/
+        //Set x = newsURLs.keySet();
+
     }
 
 
@@ -131,19 +156,6 @@ public class MainActivity extends AppCompatActivity  {
                 ret = "Current Price: $" + BTCToUSD + " 24h Volume: $" + volume +"\n" + "Min: $" + minPrice + " Max: $" + maxPrice;
                 // add 24h high, low, volume
             }
-            catch (MalformedURLException E)
-            {
-                ret = "Not working444";
-            }
-            catch (UnsupportedEncodingException E)
-            {
-               ret = "Not working2";
-            }
-            catch (IllegalStateException E)
-            {
-                ret = "Not working4";
-            }
-
             catch (Exception E)
             {
                 ret = E.toString() + E.getMessage();
@@ -163,35 +175,58 @@ public class MainActivity extends AppCompatActivity  {
 
     }
 
-    class UpdateNews extends AsyncTask<Void, Void, String>
+    class UpdateNews extends AsyncTask<Void, Void, String[]>
     {
         @Override
         protected void onPreExecute() {
         }
 
         @Override
-        public String doInBackground(Void... urls) {
+        public String[] doInBackground(Void... urls) {
             HackerNewsGET Sources = new HackerNewsGET();
-            String ret = "";
+            String titles[] = new String[5];
             try {
-                ret = Sources.sendGet();
+                //newsURLs = Sources.sendGet();
+                titles = Sources.sendGet().split("splithere");
+
                 ExchangeRates exchange = new ExchangeRates();
                 currentPrice = exchange.toFiat("USD", new BigDecimal(1)).floatValue();
             }
             catch (Exception E)
             {
-                ret = E.getMessage();
+
             }
 
-            return ret;
+            return titles;
 
         }
 
 
-        public void onPostExecute(String ret)
+        public void onPostExecute(String[] ret)
         {
-            TextView txt = (TextView) findViewById(R.id.sourcesView);
-            txt.setText(ret);
+            //TextView txt = (TextView) findViewById(R.id.sourcesView);
+            //txt.setText(ret);
+            int btns[] = new int[]{R.id.Source1, R.id.Source2, R.id.Source3, R.id.Source4, R.id.Source5};
+            for (int i = 0; i < 5; i++)
+            {
+                Button btn = (Button) findViewById(btns[i]);
+                btn.setText(ret[i]);
+            }
+/*
+            i++;
+            btn = (Button)findViewById(R.id.Source2);
+            btn.setText(titles[i]);
+            i++;
+            btn = (Button) findViewById(R.id.Source3);
+            btn.setText(titles[i]);
+            i++;
+            btn = (Button) findViewById(R.id.Source4);
+            btn.setText(titles[i]);
+            i++;
+            btn = (Button) findViewById(R.id.Source5);
+            btn.setText(titles[i]);
+            i++;*/
+
         }
 
     }
