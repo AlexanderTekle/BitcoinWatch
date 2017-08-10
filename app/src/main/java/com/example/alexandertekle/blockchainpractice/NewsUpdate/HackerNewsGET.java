@@ -5,6 +5,8 @@ package com.example.alexandertekle.blockchainpractice.NewsUpdate;
  */
 
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -71,20 +73,24 @@ public class HackerNewsGET {
 
         int i = 0;
         int q = 0;
-        while (i < 5 && hits.getJSONObject(i) != null)
+        while (q < 5 && hits.getJSONObject(i) != null)
         {
+            Log.d("here", "here");
             JSONObject article = hits.getJSONObject(i);
-            if (article.getString(("url")) != null) {
+            if (!article.getString("title").contains("Ask HN:")) {
                 String newsurl = article.getString("url");
                 String source = "";
                 //check how to get substring
-                if (newsurl.contains("www"))
+                if (newsurl.contains("www")) {
                     source = newsurl.substring(newsurl.indexOf("//") + 6, newsurl.indexOf(".com")).toUpperCase() + ": ";
-                else
+                }
+                else {
                     source = newsurl.substring(newsurl.indexOf("//") + 2, newsurl.indexOf(".com")).toUpperCase() + ": ";
+                }
                 ret += source + article.getString("title") + "_" + newsurl + "splithere";
-                i++;
+                q++;
             }
+            i++;
         }
 
         //"http://www.jpost.com/Diaspora/BitCoen-to-become-first-electronic-currency-specifically-for-Jews-501885"
