@@ -7,6 +7,7 @@ import android.webkit.WebView;
 public class OpenNewsActivity extends AppCompatActivity {
 
     private WebView search;
+    private String webURL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +18,9 @@ public class OpenNewsActivity extends AppCompatActivity {
 
         search.getSettings().setJavaScriptEnabled(true);
 
-        search.loadUrl("http://en.wikipedia.org");
+        Bundle b = getIntent().getExtras();
+        webURL = b.getString("url");
+
+        search.loadUrl(webURL);
     }
 }

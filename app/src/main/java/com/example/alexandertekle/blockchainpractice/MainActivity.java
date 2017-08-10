@@ -1,5 +1,6 @@
 package com.example.alexandertekle.blockchainpractice;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -40,19 +41,20 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener  {
     Button btn;
     float currentPrice;
     float minPrice;
     float maxPrice;
 
-    private TreeMap<Integer, String> newsURLs;
     private String[] titles;
     private String[] urls;
 
     private boolean isBusy = false;//this flag to indicate whether your async task completed or not
     private boolean stop = false;//this flag to indicate whether your button stop clicked
     private Handler handler = new Handler();
+
+    private Context context;
 
 
     @Override
@@ -61,27 +63,53 @@ public class MainActivity extends AppCompatActivity  {
         urls = new String[5];
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //ExchangeRates exchange = new ExchangeRates();
-        /*
-        btn = (Button) findViewById(R.id.displayButton);
-        btn.setOnClickListener(new OnClickListener() {
+
+        context = this;
+
+        create();/*
+        btn = (Button) findViewById(R.id.Source1);
+                btn.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                Intent myWebLink = new Intent(android.content.Intent.ACTION_VIEW);
-                myWebLink.setData(Uri.parse("https://blog.coinbase.com/update-on-bitcoin-cash-8a67a7e8dbdf?gi=9f2b07b1e6df"));
-                startActivity(myWebLink);
+                Intent intent = new Intent(context, OpenNewsActivity.class);
+                intent.putExtra("url", urls[0]);
+                startActivity(intent);
             }
         });*/
-        //ids = new int[]{R.id.Source1, R.id.Source2, R.id.Source3, R.id.Source4, R.id.Source5};
-
-        create();
+        Button one = (Button) findViewById(R.id.Source1);
+        one.setOnClickListener(this);
+        Button two = (Button) findViewById(R.id.Source2);
+        two.setOnClickListener(this);
+        Button three = (Button) findViewById(R.id.Source3);
+        three.setOnClickListener(this);
+        Button four = (Button) findViewById(R.id.Source4);
+        four.setOnClickListener(this);
+        Button five = (Button) findViewById(R.id.Source5);
+        five.setOnClickListener(this);
     }
 
     public void onClick(View view) {
         // detect the view that was "clicked"
+
+        Intent intent = new Intent(context, OpenNewsActivity.class);
+
         switch (view.getId()) {
-            case R.id.displayButton:
+            case R.id.Source1:
+                intent.putExtra("url", urls[0]);
+                break;
+            case R.id.Source2:
+                intent.putExtra("url", urls[1]);
+                break;
+            case R.id.Source3:
+                intent.putExtra("url", urls[2]);
+                break;
+            case R.id.Source4:
+                intent.putExtra("url", urls[3]);
+                break;
+            case R.id.Source5:
+                intent.putExtra("url", urls[4]);
                 break;
         }
+        startActivity(intent);
     }
 
     public void startHandler()
