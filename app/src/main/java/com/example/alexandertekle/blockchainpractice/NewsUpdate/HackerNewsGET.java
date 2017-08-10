@@ -81,10 +81,6 @@ public class HackerNewsGET {
                 String newsurl = article.getString("url");
                 String source = "";
                 //check how to get substring
-                if (!newsurl.contains("https"))
-                {
-                    newsurl = newsurl.replaceAll("http", "https");
-                }
                 //Log.d("here", newsurl);
                 if (newsurl.contains("www")) {
                     source = newsurl.substring(newsurl.indexOf("//") + 6, newsurl.indexOf(".com")).toUpperCase() + ": ";
