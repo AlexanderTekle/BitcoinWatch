@@ -47,8 +47,8 @@ public class MainActivity extends AppCompatActivity  {
     float maxPrice;
 
     private TreeMap<Integer, String> newsURLs;
-    private int[] ids;
     private String[] titles;
+    private String[] urls;
 
     private boolean isBusy = false;//this flag to indicate whether your async task completed or not
     private boolean stop = false;//this flag to indicate whether your button stop clicked
@@ -57,7 +57,8 @@ public class MainActivity extends AppCompatActivity  {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        titles = new String[10];
+        titles = new String[5];
+        urls = new String[5];
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //ExchangeRates exchange = new ExchangeRates();
@@ -71,7 +72,6 @@ public class MainActivity extends AppCompatActivity  {
             }
         });*/
         //ids = new int[]{R.id.Source1, R.id.Source2, R.id.Source3, R.id.Source4, R.id.Source5};
-        ids = new int[]{1,2,3,4,5};
 
         create();
     }
@@ -184,13 +184,13 @@ public class MainActivity extends AppCompatActivity  {
         @Override
         public String[] doInBackground(Void... urls) {
             HackerNewsGET Sources = new HackerNewsGET();
-            String titles[] = new String[5];
             try {
                 //newsURLs = Sources.sendGet();
                 titles = Sources.sendGet().split("splithere");
 
                 ExchangeRates exchange = new ExchangeRates();
                 currentPrice = exchange.toFiat("USD", new BigDecimal(1)).floatValue();
+
             }
             catch (Exception E)
             {
@@ -210,7 +210,11 @@ public class MainActivity extends AppCompatActivity  {
             for (int i = 0; i < 5; i++)
             {
                 Button btn = (Button) findViewById(btns[i]);
-                btn.setText(ret[i]);
+                btn.setText(ret[i].substring(0,ret[i].indexOf("_")));
+            }
+            for (int q=0;q<5;q++)
+            {
+                urls[q] = ret[q].substring(ret[q].indexOf("_") + 1);
             }
 /*
             i++;

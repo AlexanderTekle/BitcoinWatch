@@ -79,14 +79,16 @@ public class HackerNewsGET {
                 String source = "";
                 //check how to get substring
                 if (newsurl.contains("www"))
-                    source = newsurl.substring(url.indexOf("//") + 6, newsurl.indexOf(".com")).toUpperCase() + ": ";
+                    source = newsurl.substring(newsurl.indexOf("//") + 6, newsurl.indexOf(".com")).toUpperCase() + ": ";
                 else
-                    source = newsurl.substring(url.indexOf("//") + 2, newsurl.indexOf(".com")).toUpperCase() + ": ";
-                ret += source + article.getString("title") + "splithere";
+                    source = newsurl.substring(newsurl.indexOf("//") + 2, newsurl.indexOf(".com")).toUpperCase() + ": ";
+                ret += source + article.getString("title") + "_" + newsurl + "splithere";
                 i++;
             }
         }
 
+        //"http://www.jpost.com/Diaspora/BitCoen-to-become-first-electronic-currency-specifically-for-Jews-501885"
+          //      "https://www.wired.com/story/bitcoin-makes-even-smart-people-feel-dumb"
 
         //JSONObject article = hits.getJSONObject(num);
         //return article.getString("title");
