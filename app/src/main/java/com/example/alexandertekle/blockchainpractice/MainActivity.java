@@ -58,11 +58,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Context context;
 
+    private TreeMap <Integer, LineData>charts;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         titles = new String[5];
         urls = new String[5];
+        charts = new TreeMap<Integer, LineData>();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -268,16 +271,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             try {
                 switch (idChart) {
                     case R.id.oneweek:
+                        if (charts.containsKey(R.id.oneweek))
+                            return null;
                         return FirstChart.getData(8);
                     case R.id.onemonth:
+                        if (charts.containsKey(R.id.onemonth))
+                            return null;
                         return FirstChart.getData(31);
                     case R.id.threemonths:
+                        if (charts.containsKey(R.id.threemonths))
+                            return null;
                         return FirstChart.getData(91);
                     case R.id.sixmonths:
+                        if (charts.containsKey(R.id.sixmonths))
+                            return null;
                         return FirstChart.getData(181);
                     case R.id.oneyear:
+                        if (charts.containsKey(R.id.oneyear))
+                            return null;
                         return FirstChart.getData(366);
                     case R.id.alltime:
+                        if (charts.containsKey(R.id.alltime))
+                            return null;
                         return FirstChart.getData(3142);
 
                     default:
@@ -291,45 +306,51 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         public void onPostExecute(float [] ret){
-
-            LineChart chart = (LineChart) findViewById(R.id.chart);
-            chart.setAutoScaleMinMaxEnabled(true);
-
-            List<Entry> entries = new ArrayList<Entry>();
-            //YAxis yaxis = chart.getAxisLeft();
-            //yaxis.setAxisMinimum(1000f);
-            float min = ret[0];
-            float max = ret[0];
-            entries.add(new Entry(0, ret[0]));
-            for (int i = 1; i < ret.length; i++)
+            if (charts.containsKey(idChart))
             {
-                entries.add(new Entry(i, ret[i]));
-                if (ret[i] < min)
-                    min = ret[i];
-                else
-                    if (ret[i] > max)
-                        max = ret[i];
+                LineChart chart = (LineChart) findViewById(R.id.chart);
+                chart.setData(charts.get(idChart));
+                chart.invalidate();
             }
-            minPrice = min;
-            maxPrice = max;
+            else {
+                LineChart chart = (LineChart) findViewById(R.id.chart);
+                chart.setAutoScaleMinMaxEnabled(true);
 
-            UpdatePriceData x = new UpdatePriceData();
-            entries.add(new Entry(ret.length, currentPrice));
+                List<Entry> entries = new ArrayList<Entry>();
+                //YAxis yaxis = chart.getAxisLeft();
+                //yaxis.setAxisMinimum(1000f);
+                float min = ret[0];
+                float max = ret[0];
+                entries.add(new Entry(0, ret[0]));
+                for (int i = 1; i < ret.length; i++) {
+                    entries.add(new Entry(i, ret[i]));
+                    if (ret[i] < min)
+                        min = ret[i];
+                    else if (ret[i] > max)
+                        max = ret[i];
+                }
+                minPrice = min;
+                maxPrice = max;
 
-            LineDataSet dataSet = new LineDataSet(entries, "Label"); // add entries to
-            dataSet.setDrawValues(false);
-            dataSet.setDrawFilled(true);
-            dataSet.setLineWidth(1.3f);
-            dataSet.setDrawCircles(false);
-            //chart.setMaxVisibleValueCount(5);
-            dataSet.setColor(Color.BLUE);
-            //dataSet.setCircleColor(Color.BLACK);
-            //dataSet.setValueTextColor(Color.RED); // styling, ...
+                UpdatePriceData x = new UpdatePriceData();
+                entries.add(new Entry(ret.length, currentPrice));
 
-            LineData lineData = new LineData(dataSet);
-            chart.setData(lineData);
+                LineDataSet dataSet = new LineDataSet(entries, "Label"); // add entries to
+                dataSet.setDrawValues(false);
+                dataSet.setDrawFilled(true);
+                dataSet.setLineWidth(1.3f);
+                dataSet.setDrawCircles(false);
+                //chart.setMaxVisibleValueCount(5);
+                dataSet.setColor(Color.BLUE);
+                //dataSet.setCircleColor(Color.BLACK);
+                //dataSet.setValueTextColor(Color.RED); // styling, ...
 
-            chart.invalidate(); // refresh
+                LineData lineData = new LineData(dataSet);
+                chart.setData(lineData);
+
+                chart.invalidate(); // refresh
+                charts.put(idChart, lineData);
+            }
         }
     }
 }
