@@ -77,19 +77,21 @@ public class HackerNewsGET {
         {
            // Log.d("here", "here");
             JSONObject article = hits.getJSONObject(i);
-            if (!article.getString("title").contains("Ask HN:")) {
-                String newsurl = article.getString("url");
-                String source = "";
-                //check how to get substring
-                //Log.d("here", newsurl);
-                if (newsurl.contains("www")) {
-                    source = newsurl.substring(newsurl.indexOf("//") + 6, newsurl.indexOf(".com")).toUpperCase() + ": ";
+            if (!article.getString("title").contains("Show HN:")) {
+                if (!article.getString("title").contains("Ask HN: ")) {
+                    Log.d("here", article.getString("title"));
+                    String newsurl = article.getString("url");
+                    String source = "";
+                    //check how to get substring
+                    //Log.d("here", newsurl);
+                    if (newsurl.contains("www")) {
+                        source = newsurl.substring(newsurl.indexOf("//") + 6, newsurl.indexOf(".com")).toUpperCase() + ": ";
+                    } else {
+                        source = newsurl.substring(newsurl.indexOf("//") + 2, newsurl.indexOf(".com")).toUpperCase() + ": ";
+                    }
+                    ret += source + article.getString("title") + "_" + newsurl + "splithere";
+                    q++;
                 }
-                else {
-                    source = newsurl.substring(newsurl.indexOf("//") + 2, newsurl.indexOf(".com")).toUpperCase() + ": ";
-                }
-                ret += source + article.getString("title") + "_" + newsurl + "splithere";
-                q++;
             }
             i++;
         }
