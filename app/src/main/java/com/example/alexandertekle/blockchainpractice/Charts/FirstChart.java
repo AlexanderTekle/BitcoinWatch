@@ -39,7 +39,11 @@ public class FirstChart {
 
     public static float[] getData(int days) throws Exception
     {
-        float [] values = new float[days-1];
+        int amount = days;
+        if (days > 1000)
+            amount = days / 2;
+
+        float [] values = new float[amount-1];
 
         String url = "https://api.blockchain.info/charts/market-price?format=json&timespan=" + days + "days";
 
@@ -80,7 +84,7 @@ public class FirstChart {
         String ret = "";
         int i = 0;
 
-        while (i < days-1)
+        while (i < amount-1)
         {
 
             JSONObject daily = data.getJSONObject(i);

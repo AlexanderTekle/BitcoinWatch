@@ -90,6 +90,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         one.setOnClickListener(this);
         one = (Button) findViewById(R.id.threemonths);
         one.setOnClickListener(this);
+        one = (Button) findViewById(R.id.sixmonths);
+        one.setOnClickListener(this);
+        one = (Button) findViewById(R.id.oneyear);
+        one.setOnClickListener(this);
+        one = (Button) findViewById(R.id.alltime);
+        one.setOnClickListener(this);
 
 
 
@@ -97,7 +103,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void onClick(View view) {
         //first find the view clicked
-        if (view.getId() == R.id.oneweek || view.getId() == R.id.onemonth || view.getId() == R.id.threemonths)
+        if (view.getId() == R.id.oneweek || view.getId() == R.id.onemonth || view.getId() == R.id.threemonths || view.getId() == R.id.sixmonths
+                || view.getId() == R.id.oneyear || view.getId() == R.id.alltime)
         {
             //update for chart wanted
             idChart = view.getId();
@@ -266,6 +273,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         return FirstChart.getData(31);
                     case R.id.threemonths:
                         return FirstChart.getData(91);
+                    case R.id.sixmonths:
+                        return FirstChart.getData(181);
+                    case R.id.oneyear:
+                        return FirstChart.getData(366);
+                    case R.id.alltime:
+                        return FirstChart.getData(3142);
+
                     default:
                         return FirstChart.getData(31);
                 }
@@ -279,6 +293,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public void onPostExecute(float [] ret){
 
             LineChart chart = (LineChart) findViewById(R.id.chart);
+            chart.setAutoScaleMinMaxEnabled(true);
+
             List<Entry> entries = new ArrayList<Entry>();
             //YAxis yaxis = chart.getAxisLeft();
             //yaxis.setAxisMinimum(1000f);
@@ -300,12 +316,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             UpdatePriceData x = new UpdatePriceData();
             entries.add(new Entry(ret.length, currentPrice));
 
-            LineDataSet dataSet = new LineDataSet(entries, "Label"); // add entries to dataset
+            LineDataSet dataSet = new LineDataSet(entries, "Label"); // add entries to
+            dataSet.setDrawValues(false);
+            dataSet.setDrawFilled(true);
+            dataSet.setLineWidth(1.3f);
+            dataSet.setDrawCircles(false);
+            //chart.setMaxVisibleValueCount(5);
             dataSet.setColor(Color.BLUE);
-            dataSet.setValueTextColor(Color.RED); // styling, ...
+            //dataSet.setCircleColor(Color.BLACK);
+            //dataSet.setValueTextColor(Color.RED); // styling, ...
 
             LineData lineData = new LineData(dataSet);
             chart.setData(lineData);
+
             chart.invalidate(); // refresh
         }
     }
