@@ -37,11 +37,11 @@ public class FirstChart {
 
     }
 
-    public static float[] getData() throws Exception
+    public static float[] getData(int days) throws Exception
     {
-        float [] values = new float[30];
+        float [] values = new float[days-1];
 
-        String url = "https://api.blockchain.info/charts/market-price?format=json&timespan=31days";
+        String url = "https://api.blockchain.info/charts/market-price?format=json&timespan=" + days + "days";
 
         HttpClient client = new DefaultHttpClient();
         HttpGet request = new HttpGet(url);
@@ -79,19 +79,11 @@ public class FirstChart {
 
         String ret = "";
         int i = 0;
-        //SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy HH:mm");
 
-        while (i < 30)
+        while (i < days-1)
         {
 
             JSONObject daily = data.getJSONObject(i);
-			/*
-			 * Date stuff entered into a string
-			Long epoch = Long.parseLong(daily.getString("x")) * 1000;
-			Date date = new Date(epoch);
-
-			ret += "Day " + (i+1) + ": " + sdf.format(date) + " Price: " + daily.getString("y") + "\n";
-			*/
             values[i] = Float.parseFloat(daily.getString("y"));
             i++;
         }

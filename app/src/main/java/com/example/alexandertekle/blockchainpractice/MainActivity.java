@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private String[] titles;
     private String[] urls;
+    private int idChart = R.id.onemonth;
+
 
     private boolean isBusy = false;//this flag to indicate whether your async task completed or not
     private boolean stop = false;//this flag to indicate whether your button stop clicked
@@ -61,55 +63,69 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         titles = new String[5];
         urls = new String[5];
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         context = this;
 
-        create();/*
-        btn = (Button) findViewById(R.id.Source1);
-                btn.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(context, OpenNewsActivity.class);
-                intent.putExtra("url", urls[0]);
-                startActivity(intent);
-            }
-        });*/
+        create();
+
+        //set onclicklisteners for all news buttons
         Button one = (Button) findViewById(R.id.Source1);
         one.setOnClickListener(this);
-        Button two = (Button) findViewById(R.id.Source2);
-        two.setOnClickListener(this);
-        Button three = (Button) findViewById(R.id.Source3);
-        three.setOnClickListener(this);
-        Button four = (Button) findViewById(R.id.Source4);
-        four.setOnClickListener(this);
-        Button five = (Button) findViewById(R.id.Source5);
-        five.setOnClickListener(this);
+        one = (Button) findViewById(R.id.Source2);
+        one.setOnClickListener(this);
+        one = (Button) findViewById(R.id.Source3);
+        one.setOnClickListener(this);
+        one = (Button) findViewById(R.id.Source4);
+        one.setOnClickListener(this);
+        one = (Button) findViewById(R.id.Source5);
+        one.setOnClickListener(this);
+
+        //set onclicklisteners for all chart buttons
+        one = (Button) findViewById(R.id.oneweek);
+        one.setOnClickListener(this);
+        one = (Button) findViewById(R.id.onemonth);
+        one.setOnClickListener(this);
+        one = (Button) findViewById(R.id.threemonths);
+        one.setOnClickListener(this);
+
+
+
     }
 
     public void onClick(View view) {
-        // detect the view that was "clicked"
-
-        Intent intent = new Intent(context, OpenNewsActivity.class);
-
-        switch (view.getId()) {
-            case R.id.Source1:
-                intent.putExtra("url", urls[0]);
-                break;
-            case R.id.Source2:
-                intent.putExtra("url", urls[1]);
-                break;
-            case R.id.Source3:
-                intent.putExtra("url", urls[2]);
-                break;
-            case R.id.Source4:
-                intent.putExtra("url", urls[3]);
-                break;
-            case R.id.Source5:
-                intent.putExtra("url", urls[4]);
-                break;
+        //first find the view clicked
+        if (view.getId() == R.id.oneweek || view.getId() == R.id.onemonth || view.getId() == R.id.threemonths)
+        {
+            //update for chart wanted
+            idChart = view.getId();
+            new UpdateChart().execute();
         }
-        startActivity(intent);
+        else {
+            //handling the opening of a news article
+            Intent intent = new Intent(context, OpenNewsActivity.class);
+
+            switch (view.getId()) {
+                case R.id.Source1:
+                    intent.putExtra("url", urls[0]);
+                    break;
+                case R.id.Source2:
+                    intent.putExtra("url", urls[1]);
+                    break;
+                case R.id.Source3:
+                    intent.putExtra("url", urls[2]);
+                    break;
+                case R.id.Source4:
+                    intent.putExtra("url", urls[3]);
+                    break;
+                case R.id.Source5:
+                    intent.putExtra("url", urls[4]);
+                    break;
+            }
+            startActivity(intent);
+        }
     }
 
     public void startHandler()
@@ -138,23 +154,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void create() {
         new UpdateNews().execute();
-        new Chart().execute();
+        new UpdateChart().execute();
         startHandler();
-/*
-        Button temp = (Button) findViewById(R.id.Source1);
-        temp.setText(newsURLs.get(1));
-       /* Button temp3 = (Button) findViewById(ids[2]);
-        temp3.setText(newsURLs.get(ids[2]));*/
-        String problem = "";/*
-        for (Integer x : newsURLs.keySet())
-        {
-                Log.d("issue", problem);
-
-        //problem += x;
-        }
-        Log.d("issue", problem);*/
-        //Set x = newsURLs.keySet();
-
     }
 
 
@@ -244,26 +245,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             {
                 urls[q] = ret[q].substring(ret[q].indexOf("_") + 1);
             }
-/*
-            i++;
-            btn = (Button)findViewById(R.id.Source2);
-            btn.setText(titles[i]);
-            i++;
-            btn = (Button) findViewById(R.id.Source3);
-            btn.setText(titles[i]);
-            i++;
-            btn = (Button) findViewById(R.id.Source4);
-            btn.setText(titles[i]);
-            i++;
-            btn = (Button) findViewById(R.id.Source5);
-            btn.setText(titles[i]);
-            i++;*/
 
         }
 
     }
 
-    class Chart extends AsyncTask<Void, Void, float[]>
+    class UpdateChart extends AsyncTask<Void, Void, float[]>
     {
         @Override
         protected void onPreExecute() {
@@ -272,13 +259,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public float[] doInBackground(Void... urls) {
             try {
-                return FirstChart.getData();
+                switch (idChart) {
+                    case R.id.oneweek:
+                        return FirstChart.getData(8);
+                    case R.id.onemonth:
+                        return FirstChart.getData(31);
+                    case R.id.threemonths:
+                        return FirstChart.getData(91);
+                    default:
+                        return FirstChart.getData(31);
+                }
+
             } catch (Exception E) {
                 return null;
             }
+
         }
 
         public void onPostExecute(float [] ret){
+
             LineChart chart = (LineChart) findViewById(R.id.chart);
             List<Entry> entries = new ArrayList<Entry>();
             //YAxis yaxis = chart.getAxisLeft();
@@ -286,7 +285,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             float min = ret[0];
             float max = ret[0];
             entries.add(new Entry(0, ret[0]));
-            for (int i = 1; i < 30; i++)
+            for (int i = 1; i < ret.length; i++)
             {
                 entries.add(new Entry(i, ret[i]));
                 if (ret[i] < min)
@@ -299,7 +298,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             maxPrice = max;
 
             UpdatePriceData x = new UpdatePriceData();
-            entries.add(new Entry(30, currentPrice));
+            entries.add(new Entry(ret.length, currentPrice));
 
             LineDataSet dataSet = new LineDataSet(entries, "Label"); // add entries to dataset
             dataSet.setColor(Color.BLUE);

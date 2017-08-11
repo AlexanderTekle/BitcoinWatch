@@ -75,15 +75,12 @@ public class HackerNewsGET {
         int q = 0;
         while (q < 5 && hits.getJSONObject(i) != null)
         {
-           // Log.d("here", "here");
             JSONObject article = hits.getJSONObject(i);
             if (!article.getString("title").contains("Show HN:")) {
                 if (!article.getString("title").contains("Ask HN: ")) {
-                    Log.d("here", article.getString("title"));
                     String newsurl = article.getString("url");
                     String source = "";
                     //check how to get substring
-                    //Log.d("here", newsurl);
                     if (newsurl.contains("www")) {
                         source = newsurl.substring(newsurl.indexOf("//") + 6, newsurl.indexOf(".com")).toUpperCase() + ": ";
                     } else {
