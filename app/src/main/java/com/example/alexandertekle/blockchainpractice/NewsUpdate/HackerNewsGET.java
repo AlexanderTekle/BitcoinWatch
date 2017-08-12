@@ -76,23 +76,25 @@ public class HackerNewsGET {
         while (q < 5 && hits.getJSONObject(i) != null)
         {
             JSONObject article = hits.getJSONObject(i);
-            if (!article.getString("title").contains("Show HN:")) {
-                if (!article.getString("title").contains("Ask HN: ")) {
-                    String newsurl = article.getString("url");
-                    String source = "";
-                    //check how to get substring
-                    if (newsurl.contains("www")) {
-                        source = newsurl.substring(newsurl.indexOf("//") + 6, newsurl.indexOf(".com")).toUpperCase() + ": ";
-                    } else {
-                        source = newsurl.substring(newsurl.indexOf("//") + 2, newsurl.indexOf(".com")).toUpperCase() + ": ";
+            boolean badword = article.getString("title").contains("Ask HN:") || article.getString("title").contains("Show HN:");
+                if (!badword) {
+                    if (article.getString("url").contains(".com"))
+                    {
+                        String newsurl = article.getString("url");
+                        String source = "";
+                        //check how to get substring
+                        if (newsurl.contains("www")) {
+                            source = newsurl.substring(newsurl.indexOf("//") + 6, newsurl.indexOf(".com")).toUpperCase() + ": ";
+                        } else {
+                            source = newsurl.substring(newsurl.indexOf("//") + 2, newsurl.indexOf(".com")).toUpperCase() + ": ";
+                        }
+                        ret += source + article.getString("title") + "_" + newsurl + "splithere";
+                        q++;
                     }
-                    ret += source + article.getString("title") + "_" + newsurl + "splithere";
-                    q++;
                 }
-            }
+            //}
             i++;
         }
-
         return ret;
 
     }
