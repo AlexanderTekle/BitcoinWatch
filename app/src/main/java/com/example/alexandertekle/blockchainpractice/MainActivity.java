@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         one.setOnClickListener(this);
         one = (Button) findViewById(R.id.oneyear);
         one.setOnClickListener(this);
-        one = (Button) findViewById(R.id.fiveyears);
+        one = (Button) findViewById(R.id.threeyears);
         one.setOnClickListener(this);
 
 
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         //first find the view clicked
         if (view.getId() == R.id.oneweek || view.getId() == R.id.onemonth || view.getId() == R.id.threemonths || view.getId() == R.id.sixmonths
-                || view.getId() == R.id.oneyear || view.getId() == R.id.fiveyears)
+                || view.getId() == R.id.oneyear || view.getId() == R.id.threeyears)
         {
             //update for chart wanted
             idChart = view.getId();
@@ -293,8 +293,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         if (charts.containsKey(R.id.oneyear))
                             return null;
                         return FirstChart.getData(366);
-                    case R.id.fiveyears:
-                        if (charts.containsKey(R.id.fiveyears))
+                    case R.id.threeyears:
+                        if (charts.containsKey(R.id.threeyears))
                             return null;
                         return FirstChart.getData(1096);
 
