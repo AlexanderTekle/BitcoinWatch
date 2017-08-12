@@ -39,6 +39,8 @@ import java.lang.Runnable;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.text.NumberFormat;
+
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener  {
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private String[] titles;
     private String[] urls;
+    private float volume;
     private int idChart = R.id.onemonth;
 
 
@@ -58,14 +61,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Context context;
 
-    private TreeMap <Integer, LineData>charts;
+    private TreeMap <Integer, ChartWithData>charts;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         titles = new String[5];
         urls = new String[5];
-        charts = new TreeMap<Integer, LineData>();
+        charts = new TreeMap<Integer, ChartWithData>();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -97,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         one.setOnClickListener(this);
         one = (Button) findViewById(R.id.oneyear);
         one.setOnClickListener(this);
-        one = (Button) findViewById(R.id.alltime);
+        one = (Button) findViewById(R.id.fiveyears);
         one.setOnClickListener(this);
 
 
@@ -107,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         //first find the view clicked
         if (view.getId() == R.id.oneweek || view.getId() == R.id.onemonth || view.getId() == R.id.threemonths || view.getId() == R.id.sixmonths
-                || view.getId() == R.id.oneyear || view.getId() == R.id.alltime)
+                || view.getId() == R.id.oneyear || view.getId() == R.id.fiveyears)
         {
             //update for chart wanted
             idChart = view.getId();
@@ -187,12 +190,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 StatisticsResponse statsresponse = stats.getStats();
 
 
-                BigDecimal BTCToUSD = exchange.toFiat("USD", new BigDecimal(1));
-                BigDecimal volume = statsresponse.getTradeVolumeUSD();
+                currentPrice = exchange.toFiat("USD", new BigDecimal(1)).floatValue();
+                volume = statsresponse.getTradeVolumeUSD().floatValue();
 
 
-                currentPrice = BTCToUSD.floatValue();
-                ret = "Current Price: $" + BTCToUSD + " 24h Volume: $" + volume +"\n" + "Min: $" + minPrice + " Max: $" + maxPrice;
+                ret = "Current Price: $" + String.format("%.2f", currentPrice) + " 24h Volume: $" + NumberFormat.getInstance().format(volume) +"\n" + "Min: $"
+                        + String.format("%.2f", minPrice) + " Max: $" + String.format("%.2f", maxPrice);
                 // add 24h high, low, volume
             }
             catch (Exception E)
@@ -290,10 +293,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         if (charts.containsKey(R.id.oneyear))
                             return null;
                         return FirstChart.getData(366);
-                    case R.id.alltime:
-                        if (charts.containsKey(R.id.alltime))
+                    case R.id.fiveyears:
+                        if (charts.containsKey(R.id.fiveyears))
                             return null;
-                        return FirstChart.getData(3142);
+                        return FirstChart.getData(1096);
 
                     default:
                         return FirstChart.getData(31);
@@ -309,7 +312,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (charts.containsKey(idChart))
             {
                 LineChart chart = (LineChart) findViewById(R.id.chart);
-                chart.setData(charts.get(idChart));
+                chart.setData(charts.get(idChart).getDataSet());
+
+                TextView txt = (TextView) findViewById(R.id.priceView);
+                txt.setText("Current Price: $" + String.format("%.2f",currentPrice) + " 24h Volume: $" + NumberFormat.getInstance().format(volume)
+                        +"\n" + "Min: $" + String.format("%.2f",charts.get(idChart).getMin()) + " Max: $" + String.format("%.2f",charts.get(idChart).getMax()));
+
                 chart.invalidate();
             }
             else {
@@ -349,7 +357,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 chart.setData(lineData);
 
                 chart.invalidate(); // refresh
-                charts.put(idChart, lineData);
+                TextView txt = (TextView) findViewById(R.id.priceView);
+                txt.setText("Current Price: $" + String.format("%.2f", currentPrice) + " 24h Volume: $" + NumberFormat.getInstance().format(volume) +"\n" + "Min: $"
+                        + String.format("%.2f", minPrice) + " Max: $" + String.format("%.2f", maxPrice));
+                charts.put(idChart, new ChartWithData(minPrice, maxPrice, lineData));
             }
         }
     }

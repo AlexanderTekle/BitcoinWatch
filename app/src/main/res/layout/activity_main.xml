@@ -142,11 +142,11 @@
                     android:text="1Y" />
 
                 <Button
-                    android:id="@+id/alltime"
+                    android:id="@+id/fiveyears"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="All" />
+                    android:text="5Y" />
             </LinearLayout>
 
             <com.github.mikephil.charting.charts.LineChart
