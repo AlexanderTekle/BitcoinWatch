@@ -39,13 +39,15 @@ import java.text.NumberFormat;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener  {
     Button btn;
-    float currentPrice;
-    float minPrice;
-    float maxPrice;
+
+    private float currentPrice;
+    private float minPrice;
+    private float maxPrice;
+    private float volume;
+    private float diff;
 
     private String[] titles;
     private String[] urls;
-    private float volume;
     private int idChart = R.id.onemonth;
     private BarData currentBarData;
     private BarChart chart2;
@@ -108,36 +110,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    public void startHandler()
-    {
-        callAysncTask();
-        /*
-        Uncomment this for updates
-        handler.postDelayed(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                if(!isBusy) callAysncTask();
-
-                if(!stop) startHandler();
-            }
-        }, 5000);*/
-    }
-
-    private void callAysncTask()
-    {
-        //TODO
-        new UpdatePriceData().execute();
-    }
-
 
     public void create() {
         new UpdateNews().execute();
         new UpdateVolChart().execute();
         new UpdateChart().execute();
-        startHandler();
+        new UpdatePriceData().execute();
+
+        //startHandler();
     }
+
+    public void BTCInfo()
+    {
+
+    }
+
+
 
 
 
@@ -183,6 +171,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     }
+
+
 
     class UpdateNews extends AsyncTask<Void, Void, String[]>
     {
