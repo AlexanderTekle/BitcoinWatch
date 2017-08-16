@@ -33,6 +33,7 @@ import static org.apache.http.HttpHeaders.USER_AGENT;
  */
 
 public class FirstChart {
+    float high;
 
     private FirstChart()
     {
@@ -43,6 +44,11 @@ public class FirstChart {
     {
         int amount;
         String url;
+        if (days == 365)
+        {
+            amount = 365;
+            url = "https://min-api.cryptocompare.com/data/histoday?fsym=BTC&tsym=USD&limit=365&aggregate=1&e=CCCAGG";
+        }
         if (days == 1)
             {
                 amount = 25;
@@ -51,7 +57,7 @@ public class FirstChart {
         else
         {
                 amount = days;
-                url = "https://min-api.cryptocompare.com/data/histoday?fsym=BTC&tsym=USD&limit=" + (amount) + "&aggregate=7&e=CCCAGG";
+                url = "https://min-api.cryptocompare.com/data/histoday?fsym=BTC&tsym=USD&limit=" + (amount) + "&aggregate=1&e=CCCAGG";
         }
 
         float values[] = new float[amount];
@@ -103,9 +109,11 @@ public class FirstChart {
             }
         }
         else {*/
-            while (i < amount ) {
+            while (i < amount) {
                 JSONObject daily = data.getJSONObject(i);
                 values[i] = Float.parseFloat(daily.getString("close"));
+                Log.d("val", daily.getString("close"));
+
                 i++;
             }
       //  }

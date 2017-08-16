@@ -100,6 +100,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         {
             //update for chart wanted
             idChart = view.getId();
+            UpdateVolChart U1 = new UpdateVolChart();
+            U1.execute();
             new UpdateVolChart().execute();
             new UpdateChart().execute();
         }

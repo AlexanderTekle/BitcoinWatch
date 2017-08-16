@@ -74,7 +74,7 @@ public class VolumeChart {
             //Log.d("now",i + ": "+Float.parseFloat(daily.getString("y")));
             //Log.d("daily.")
             values[i] = Float.parseFloat(daily.getString("volumeto"));
-            Log.d("val", daily.getString("volumeto"));
+            //Log.d("val", daily.getString("volumeto"));
             i++;
         }
 
