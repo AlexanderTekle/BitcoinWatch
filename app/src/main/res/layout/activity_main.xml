@@ -34,12 +34,58 @@
             tools:layout_constraintTop_creator="1"
             android:weightSum="1">
 
-            <TextView
-                android:id="@+id/priceView"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Price Data" />
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="1.0">
+                >
+
+                <LinearLayout
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight=".5"
+                    android:layout_width="0dip">
+
+                    <TextView
+                        android:id="@+id/current"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Current Price" />
+
+                    <TextView
+                        android:id="@+id/difference"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Difference" />
+
+                    <TextView
+                        android:id="@+id/volume"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="24h Volume" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_weight=".5"
+                    android:layout_width="0dip"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/high"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="High" />
+
+                    <TextView
+                        android:id="@+id/low"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Low" />
+                </LinearLayout>
+            </LinearLayout>
+
             <!--
             <TextView
                 android:id="@+id/sourcesView"

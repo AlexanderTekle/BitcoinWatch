@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -40,11 +41,12 @@ import java.text.NumberFormat;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener  {
     Button btn;
 
-    private float currentPrice;
-    private float minPrice;
-    private float maxPrice;
-    private float volume;
-    private float diff;
+    public float currentPrice;
+    public float minPrice;
+    public float maxPrice;
+    public float volume;
+    public float diff;
+    public float percentdiff;
 
     private String[] titles;
     private String[] urls;
@@ -116,12 +118,40 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         new UpdateVolChart().execute();
         new UpdateChart().execute();
         new UpdatePriceData().execute();
+        //BTCInfo();
 
         //startHandler();
     }
 
     public void BTCInfo()
     {
+        Log.d("current", "" + currentPrice);
+        Log.d("current2", "" + diff);
+        Log.d("current3", "" + percentdiff);
+        Log.d("current4", "" + volume);
+        Log.d("current5", "" + maxPrice);
+        Log.d("current6", "" + minPrice);
+
+
+
+        /*ret = "Current Price: $" + String.format("%.2f", currentPrice) + " 24h Volume: $" + NumberFormat.getInstance().format(volume) +"\n" + "Min: $"
+                + String.format("%.2f", minPrice) + " Max: $" + String.format("%.2f", maxPrice);*/
+
+            //left
+            TextView txt = (TextView) findViewById(R.id.current);
+            txt.setText(String.format("%.2f", currentPrice));
+            txt = (TextView) findViewById(R.id.difference);
+            txt.setText(String.format("%.2f", diff) + "  " + String.format("%.2f", percentdiff));
+            txt = (TextView) findViewById(R.id.volume);
+            txt.setText((String.format("%.2f", volume)));
+
+            //right
+            txt = (TextView) findViewById(R.id.high);
+            txt.setText(String.format("%.2f", maxPrice) );
+            txt = (TextView) findViewById(R.id.low);
+            txt.setText(String.format("%.2f", minPrice));
+
+
 
     }
 
@@ -164,8 +194,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void onPostExecute(String ret)
         {
-            /*TextView txt = (TextView) findViewById(R.id.priceView);
-            txt.setText(ret);*/
+
 
         }
 
@@ -182,10 +211,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         @Override
         public String[] doInBackground(Void... urls) {
-            //HackerNewsGET Sources = new HackerNewsGET();
             try {
-                //newsURLs = Sources.sendGet();
-                //titles = Sources.sendGet().split("splithere");
+
 
                 ExchangeRates exchange = new ExchangeRates();
                 currentPrice = exchange.toFiat("USD", new BigDecimal(1)).floatValue();
@@ -260,10 +287,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 chart.setDrawGridBackground(true);
                 chart.setData(charts.get(idChart).getDataSet());
 
-                TextView txt = (TextView) findViewById(R.id.priceView);
-               // float diff = (((LineDataSet)(charts.get(idChart).getDataSet().getDataSetByLabel("entries",false))).getEntryForIndex(0).getY());
-                txt.setText("Current Price: $" + String.format("%.2f",currentPrice) + " Difference: $" + (currentPrice - charts.get(idChart).getFirstprice()) +
-                        "\n24h Volume: $" + NumberFormat.getInstance().format(volume) +"\n" + "Min: $" + String.format("%.2f",charts.get(idChart).getMin()) + " Max: $" + String.format("%.2f",charts.get(idChart).getMax()) );
                 BarChart volChart = (BarChart) findViewById(R.id.volchart);
                 volChart.setData(currentBarData);
                 volChart.invalidate();
@@ -316,10 +339,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 volChart.invalidate();
                 chart.invalidate(); // refresh
 //        chart2.invalidate();
-                TextView txt = (TextView) findViewById(R.id.priceView);
-                txt.setText("Current Price: $" + String.format("%.2f", currentPrice) + " Difference: $" + (currentPrice - ret[0]) + " 24h Volume: $" + NumberFormat.getInstance().format(volume) +"\n" + "Min: $"
-                        + String.format("%.2f", minPrice) + " Max: $" + String.format("%.2f", maxPrice));
+
+                diff = currentPrice - ret[0];
+                percentdiff = diff / currentPrice;
+
                 charts.put(idChart, new ChartWithData(minPrice, maxPrice, lineData, currentBarData,ret[0]));
+                BTCInfo();
             }
         }
     }
@@ -328,6 +353,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     {
         @Override
         protected void onPreExecute() {
+
         }
 
         @Override
@@ -423,8 +449,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 currentBarData = barData;
 
-            }
+                //BTCInfo();
 
+            }
 
         }
 

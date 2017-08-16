@@ -112,7 +112,6 @@ public class FirstChart {
             while (i < amount) {
                 JSONObject daily = data.getJSONObject(i);
                 values[i] = Float.parseFloat(daily.getString("close"));
-                Log.d("val", daily.getString("close"));
 
                 i++;
             }
