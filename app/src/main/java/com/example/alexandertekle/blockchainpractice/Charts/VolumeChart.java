@@ -22,17 +22,23 @@ import static org.apache.http.HttpHeaders.USER_AGENT;
 public class VolumeChart {
     public static float[] getData(int days) throws Exception
     {
-        int amount = days;
-        float [] values = new float[amount-1];
+        int amount;
+        //float [] values = new float[amount-1];
         String url= "";
-        if (amount > 1000)
+        if (days == 1)
         {
-             url = "https://api.blockchain.info/charts/trade-volume?timespan=" + 2003 + "days&format=json";
+            amount = 25;
+            url = "https://min-api.cryptocompare.com/data/histohour?fsym=BTC&tsym=USD&limit=24&aggregate=1";
 
         }
         else {
-             url = "https://api.blockchain.info/charts/trade-volume?timespan=" + amount + "days&format=json";
+            amount = days;
+            url = "https://min-api.cryptocompare.com/data/histoday?fsym=BTC&tsym=USD&limit="+amount+"&aggregate=1&e=CCCAGG";
+           // url = "https://min-api.cryptocompare.com/data/histoday?fsym=BTC&tsym=USD&limit=" + (amount) + "&aggregate=7&e=CCCAGG";
         }
+
+        float values[] = new float[amount];
+
 
         HttpClient client = new DefaultHttpClient();
         HttpGet request = new HttpGet(url);
@@ -59,14 +65,16 @@ public class VolumeChart {
         JSONArray jsonArray = new JSONArray(tokener);
         JSONObject j = jsonArray.getJSONObject(0);
 
-        JSONArray data = j.getJSONArray("values");
-        Log.d("here", data.toString());
+        JSONArray data = j.getJSONArray("Data");
+        //Log.d("here", data.toString());
         int i = 0;
 
-        while (i < amount - 1) {
+        while (i < amount) {
             JSONObject daily = data.getJSONObject(i);
-            Log.d("now",i + ": "+Float.parseFloat(daily.getString("y")));
-            values[i] = Float.parseFloat(daily.getString("y"));
+            //Log.d("now",i + ": "+Float.parseFloat(daily.getString("y")));
+            //Log.d("daily.")
+            values[i] = Float.parseFloat(daily.getString("volumeto"));
+            Log.d("val", daily.getString("volumeto"));
             i++;
         }
 

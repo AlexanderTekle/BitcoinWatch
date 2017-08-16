@@ -54,6 +54,13 @@
                 android:orientation="horizontal">
 
                 <Button
+                    android:id="@+id/oneday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="1D" />
+
+                <Button
                     android:id="@+id/oneweek"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -88,12 +95,7 @@
                     android:layout_weight="1"
                     android:text="1Y" />
 
-                <Button
-                    android:id="@+id/threeyears"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="3Y" />
+
             </LinearLayout>
 
             <com.github.mikephil.charting.charts.LineChart

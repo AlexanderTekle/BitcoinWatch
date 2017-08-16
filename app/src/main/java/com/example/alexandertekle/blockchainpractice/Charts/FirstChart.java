@@ -1,5 +1,7 @@
 package com.example.alexandertekle.blockchainpractice.Charts;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 
 import java.io.IOException;
@@ -39,14 +41,20 @@ public class FirstChart {
 
     public static float[] getData(int days) throws Exception
     {
-        int amount = days;
-       /* if (days > 1000)
-            amount = days/2;*/
+        int amount;
+        String url;
+        if (days == 1)
+            {
+                amount = 25;
+                url = "https://min-api.cryptocompare.com/data/histohour?fsym=BTC&tsym=USD&limit=24&aggregate=1";
+        }
+        else
+        {
+                amount = days;
+                url = "https://min-api.cryptocompare.com/data/histoday?fsym=BTC&tsym=USD&limit=" + (amount) + "&aggregate=7&e=CCCAGG";
+        }
 
-
-        float [] values = new float[amount-1];
-
-        String url = "https://api.blockchain.info/charts/market-price?format=json&timespan=" + amount + "days";
+        float values[] = new float[amount];
 
         HttpClient client = new DefaultHttpClient();
         HttpGet request = new HttpGet(url);
@@ -79,7 +87,7 @@ public class FirstChart {
         JSONObject j = jsonArray.getJSONObject(0);
 
 
-        JSONArray data = j.getJSONArray("values");
+        JSONArray data = j.getJSONArray("Data");
 
 
         String ret = "";
@@ -95,9 +103,9 @@ public class FirstChart {
             }
         }
         else {*/
-            while (i < amount - 1) {
+            while (i < amount ) {
                 JSONObject daily = data.getJSONObject(i);
-                values[i] = Float.parseFloat(daily.getString("y"));
+                values[i] = Float.parseFloat(daily.getString("close"));
                 i++;
             }
       //  }

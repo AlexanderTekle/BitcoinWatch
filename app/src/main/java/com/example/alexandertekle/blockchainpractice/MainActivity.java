@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         one.setOnClickListener(this);
         one = (Button) findViewById(R.id.oneyear);
         one.setOnClickListener(this);
-        one = (Button) findViewById(R.id.threeyears);
+        one = (Button) findViewById(R.id.oneday);
         one.setOnClickListener(this);
 
 
@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         //first find the view clicked
         if (view.getId() == R.id.oneweek || view.getId() == R.id.onemonth || view.getId() == R.id.threemonths || view.getId() == R.id.sixmonths
-                || view.getId() == R.id.oneyear || view.getId() == R.id.threeyears)
+                || view.getId() == R.id.oneyear || view.getId() == R.id.oneday)
         {
             //update for chart wanted
             idChart = view.getId();
@@ -230,30 +230,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     case R.id.oneweek:
                         if (charts.containsKey(R.id.oneweek))
                             return null;
-                        return FirstChart.getData(8);
+                        return FirstChart.getData(7);
                     case R.id.onemonth:
                         if (charts.containsKey(R.id.onemonth))
                             return null;
-                        return FirstChart.getData(31);
+                        return FirstChart.getData(30);
                     case R.id.threemonths:
                         if (charts.containsKey(R.id.threemonths))
                             return null;
-                        return FirstChart.getData(91);
+                        return FirstChart.getData(90);
                     case R.id.sixmonths:
                         if (charts.containsKey(R.id.sixmonths))
                             return null;
-                        return FirstChart.getData(181);
+                        return FirstChart.getData(180);
                     case R.id.oneyear:
                         if (charts.containsKey(R.id.oneyear))
                             return null;
-                        return FirstChart.getData(366);
-                    case R.id.threeyears:
-                        if (charts.containsKey(R.id.threeyears))
+                        return FirstChart.getData(365);
+                    case R.id.oneday:
+                        if (charts.containsKey(R.id.oneday))
                             return null;
-                        return FirstChart.getData(1096);
-
+                        return FirstChart.getData(1);
                     default:
-                        return FirstChart.getData(31);
+                        return FirstChart.getData(30);
                 }
 
             } catch (Exception E) {
@@ -347,30 +346,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     case R.id.oneweek:
                         if (charts.containsKey(R.id.oneweek))
                             return null;
-                        return VolumeChart.getData(8);
+                        return VolumeChart.getData(7);
                     case R.id.onemonth:
                         if (charts.containsKey(R.id.onemonth))
                             return null;
-                        return VolumeChart.getData(31);
+                        return VolumeChart.getData(30);
                     case R.id.threemonths:
                         if (charts.containsKey(R.id.threemonths))
                             return null;
-                        return VolumeChart.getData(91);
+                        return VolumeChart.getData(90);
                     case R.id.sixmonths:
                         if (charts.containsKey(R.id.sixmonths))
                             return null;
-                        return VolumeChart.getData(181);
+                        return VolumeChart.getData(180);
                     case R.id.oneyear:
                         if (charts.containsKey(R.id.oneyear))
                             return null;
-                        return VolumeChart.getData(366);
-                    case R.id.threeyears:
-                        if (charts.containsKey(R.id.threeyears))
+                        return VolumeChart.getData(365);
+                    case R.id.oneday:
+                        if (charts.containsKey(R.id.oneday))
                             return null;
-                        return VolumeChart.getData(1096);
+                        return VolumeChart.getData(1);
 
                     default:
-                        return VolumeChart.getData(31);
+                        return VolumeChart.getData(30);
                 }
 
             } catch (Exception E) {
@@ -410,7 +409,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 maxPrice = max;
 
                 UpdatePriceData x = new UpdatePriceData();
-                entries.add(new BarEntry(ret.length, volume));
+               // entries.add(new BarEntry(ret.length, volume));
 
                 BarDataSet dataSet = new BarDataSet(entries, "Label"); // add entries to
 
@@ -432,16 +431,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 currentBarData = barData;
 
-                //chart.setData(barData);
-                //chart.fitScreen();
-                //chart2 = chart;
-                //chart.setDrawGridBackground(false);
-
-                //chart.invalidate(); // refresh
-                // TextView txt = (TextView) findViewById(R.id.priceView);
-                //txt.setText("Current Price: $" + String.format("%.2f", currentPrice) + " 24h Volume: $" + NumberFormat.getInstance().format(volume) +"\n" + "Min: $"
-                //+ String.format("%.2f", minPrice) + " Max: $" + String.format("%.2f", maxPrice));
-                //charts.put(idChart, new ChartWithData(minPrice, maxPrice, bar));
             }
 
 
@@ -555,7 +544,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         one.setOnClickListener(this);
         one = (Button) findViewById(R.id.oneyear);
         one.setOnClickListener(this);
-        one = (Button) findViewById(R.id.threeyears);
+        one = (Button) findViewById(R.id.oneday);
         one.setOnClickListener(this);
 
 
@@ -565,7 +554,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         //first find the view clicked
         if (view.getId() == R.id.oneweek || view.getId() == R.id.onemonth || view.getId() == R.id.threemonths || view.getId() == R.id.sixmonths
-                || view.getId() == R.id.oneyear || view.getId() == R.id.threeyears)
+                || view.getId() == R.id.oneyear || view.getId() == R.id.oneday)
         {
             //update for chart wanted
             idChart = view.getId();
@@ -736,8 +725,8 @@ class UpdateChart extends AsyncTask<Void, Void, float[]>
                     if (charts.containsKey(R.id.oneyear))
                         return null;
                     return FirstChart.getData(366);
-                case R.id.threeyears:
-                    if (charts.containsKey(R.id.threeyears))
+                case R.id.oneday:
+                    if (charts.containsKey(R.id.oneday))
                         return null;
                     return FirstChart.getData(1096);
 
@@ -808,4 +797,4 @@ class UpdateChart extends AsyncTask<Void, Void, float[]>
     }
 }
 }
-
+*/
