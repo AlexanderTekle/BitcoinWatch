@@ -18,6 +18,8 @@ import com.example.alexandertekle.blockchainpractice.info.blockchain.api.exchang
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -137,9 +139,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             TextView txt = (TextView) findViewById(R.id.current);
             txt.setText("$" + String.format("%.2f", currentPrice));
             txt = (TextView) findViewById(R.id.percent);
-            txt.setText("(" + String.format("%.2f", percentdiff)+"%)");
-            if (percentdiff > 0) txt.setTextColor(Color.GREEN);
-            else txt.setTextColor(Color.RED);
+            if (percentdiff > 0) {
+                if (percentdiff >= 100) {
+                    txt.setText("  (" + String.format("%.2f", percentdiff) + "%)");
+                }
+                else {
+                    txt.setText("(" + String.format("%.2f", percentdiff)+"%)");
+                }
+                txt.setTextColor(Color.GREEN);
+            }
+
+            else
+            {
+                txt.setTextColor(Color.RED);
+                txt.setText("(" + String.format("%.2f", percentdiff)+"%)");
+            }
             txt = (TextView) findViewById(R.id.difference);
             txt.setText("Change: $" + String.format("%.2f", diff));
             txt = (TextView) findViewById(R.id.volume);
@@ -287,6 +301,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 chart.setDrawGridBackground(true);
                 chart.setData(charts.get(idChart).getDataSet());
 
+
+
                 BarChart volChart = (BarChart) findViewById(R.id.volchart);
                 volChart.setData(currentBarData);
                 volChart.invalidate();
@@ -301,8 +317,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             else {
                 LineChart chart = (LineChart) findViewById(R.id.chart);
-                //chart.setGridBackgroundColor(Color.RED);
+                Legend legend = chart.getLegend();
+                legend.setEnabled(false);
 
+                Description D = new Description();
+                D.setText("");
+                chart.setDescription(D);
+                //chart.setGridBackgroundColor(Color.RED);
+                chart.getXAxis().setDrawGridLines(false);
+                chart.getAxisLeft().setDrawGridLines(false);
+                chart.getAxisRight().setDrawGridLines(false);
                 chart.setAutoScaleMinMaxEnabled(true);
 
                 List<Entry> entries = new ArrayList<Entry>();
@@ -421,6 +445,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
             else {
                 BarChart chart = (BarChart) findViewById(R.id.volchart);
+
+                Legend legend = chart.getLegend();
+                legend.setEnabled(false);
+
+                chart.getXAxis().setDrawGridLines(false);
+                chart.getAxisLeft().setDrawGridLines(false);
+                chart.getAxisRight().setDrawGridLines(false);
+
+                Description D = new Description();
+                D.setText("");
+                chart.setDescription(D);
                 chart.setAutoScaleMinMaxEnabled(true);
 
                 List<BarEntry> entries = new ArrayList<BarEntry>();
