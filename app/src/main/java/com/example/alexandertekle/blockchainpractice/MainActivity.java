@@ -125,12 +125,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void BTCInfo()
     {
+        /*
         Log.d("current", "" + currentPrice);
         Log.d("current2", "" + diff);
         Log.d("current3", "" + percentdiff);
         Log.d("current4", "" + volume);
         Log.d("current5", "" + maxPrice);
-        Log.d("current6", "" + minPrice);
+        Log.d("current6", "" + minPrice);*/
 
 
 
@@ -172,12 +173,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             try {
                 ExchangeRates exchange = new ExchangeRates();
 
-                Statistics stats = new Statistics();
-                StatisticsResponse statsresponse = stats.getStats();
+                //Statistics stats = new Statistics();
+                //StatisticsResponse statsresponse = stats.getStats();
 
 
                 currentPrice = exchange.toFiat("USD", new BigDecimal(1)).floatValue();
-                volume = statsresponse.getTradeVolumeUSD().floatValue();
+                //volume = statsresponse.getTradeVolumeUSD().floatValue();
 
 
                 ret = "Current Price: $" + String.format("%.2f", currentPrice) + " 24h Volume: $" + NumberFormat.getInstance().format(volume) +"\n" + "Min: $"
@@ -291,6 +292,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 volChart.setData(currentBarData);
                 volChart.invalidate();
                 chart.invalidate();
+                currentPrice = charts.get(idChart).getCurrentPrice();
+                minPrice = charts.get(idChart).getMin();
+                maxPrice = charts.get(idChart).getMax();
+                volume = charts.get(idChart).getVolume();
+                diff = charts.get(idChart).getDiff();
+                percentdiff = charts.get(idChart).getPercentdiff();
+                BTCInfo();
             }
             else {
                 LineChart chart = (LineChart) findViewById(R.id.chart);
@@ -338,12 +346,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 volChart.setData(currentBarData);
                 volChart.invalidate();
                 chart.invalidate(); // refresh
-//        chart2.invalidate();
 
                 diff = currentPrice - ret[0];
-                percentdiff = diff / currentPrice;
+                percentdiff = diff / currentPrice * 100;
 
-                charts.put(idChart, new ChartWithData(minPrice, maxPrice, lineData, currentBarData,ret[0]));
+                charts.put(idChart, new ChartWithData(minPrice, maxPrice, lineData, currentBarData,ret[0], currentPrice, diff, percentdiff, volume));
                 BTCInfo();
             }
         }
@@ -360,6 +367,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public float[] doInBackground(Void... urls)
         {
             try {
+
+                Statistics stats = new Statistics();
+                StatisticsResponse statsresponse = stats.getStats();
+
+
+                volume = statsresponse.getTradeVolumeUSD().floatValue();
+
                 switch (idChart) {
                     case R.id.oneweek:
                         if (charts.containsKey(R.id.oneweek))
@@ -418,13 +432,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 entries.add(new BarEntry(0, ret[0]));
                 for (int i = 1; i < ret.length; i++) {
                     entries.add(new BarEntry(i, ret[i]));
-                    if (ret[i] < min)
-                        min = ret[i];
-                    else if (ret[i] > max)
-                        max = ret[i];
                 }
-                minPrice = min;
-                maxPrice = max;
+
 
                 UpdatePriceData x = new UpdatePriceData();
                // entries.add(new BarEntry(ret.length, volume));
@@ -448,9 +457,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 yAxis.setValueFormatter(formatter);
 
                 currentBarData = barData;
-
-                //BTCInfo();
-
             }
 
         }
