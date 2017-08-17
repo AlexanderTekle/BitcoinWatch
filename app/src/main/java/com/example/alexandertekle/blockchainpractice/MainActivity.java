@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private String[] titles;
     private String[] urls;
-    private int idChart = R.id.onemonth;
+    private int idChart = R.id.oneday;
     private BarData currentBarData;
     private BarChart chart2;
 
@@ -133,24 +133,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d("current5", "" + maxPrice);
         Log.d("current6", "" + minPrice);*/
 
-
-
-        /*ret = "Current Price: $" + String.format("%.2f", currentPrice) + " 24h Volume: $" + NumberFormat.getInstance().format(volume) +"\n" + "Min: $"
-                + String.format("%.2f", minPrice) + " Max: $" + String.format("%.2f", maxPrice);*/
-
             //left
             TextView txt = (TextView) findViewById(R.id.current);
-            txt.setText(String.format("%.2f", currentPrice));
+            txt.setText("$" + String.format("%.2f", currentPrice));
+            txt = (TextView) findViewById(R.id.percent);
+            txt.setText("(" + String.format("%.2f", percentdiff)+"%)");
+            if (percentdiff > 0) txt.setTextColor(Color.GREEN);
+            else txt.setTextColor(Color.RED);
             txt = (TextView) findViewById(R.id.difference);
-            txt.setText(String.format("%.2f", diff) + "  " + String.format("%.2f", percentdiff));
+            txt.setText("Change: $" + String.format("%.2f", diff));
             txt = (TextView) findViewById(R.id.volume);
-            txt.setText((String.format("%.2f", volume)));
+            txt.setText("24h Vol: $" + NumberFormat.getInstance().format(volume));
 
             //right
             txt = (TextView) findViewById(R.id.high);
-            txt.setText(String.format("%.2f", maxPrice) );
+            txt.setText("Max: $" + String.format("%.2f", maxPrice) );
             txt = (TextView) findViewById(R.id.low);
-            txt.setText(String.format("%.2f", minPrice));
+            txt.setText("Min: $" + String.format("%.2f", minPrice));
 
 
 
@@ -348,7 +347,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 chart.invalidate(); // refresh
 
                 diff = currentPrice - ret[0];
-                percentdiff = diff / currentPrice * 100;
+                percentdiff = diff / ret[0] * 100;
 
                 charts.put(idChart, new ChartWithData(minPrice, maxPrice, lineData, currentBarData,ret[0], currentPrice, diff, percentdiff, volume));
                 BTCInfo();
