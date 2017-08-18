@@ -20,6 +20,7 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -52,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private String[] titles;
     private String[] urls;
+    private Button clicked;
+    private int previous = R.id.oneday;
     private int idChart = R.id.oneday;
     private BarData currentBarData;
     private BarChart chart2;
@@ -71,9 +74,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         titles = new String[5];
         urls = new String[5];
         charts = new TreeMap<Integer, ChartWithData>();
+        // clicked = (Button) findViewById(R.id.oneday);
+        //clicked.setTextColor(Color.BLUE);
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         context = this;
 
@@ -104,13 +112,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (view.getId() == R.id.oneweek || view.getId() == R.id.onemonth || view.getId() == R.id.threemonths || view.getId() == R.id.sixmonths
                 || view.getId() == R.id.oneyear || view.getId() == R.id.oneday)
         {
+            Button btn = (Button)findViewById(previous);
+            int DefaultButtonColor = btn.getTextColors().getDefaultColor();
+            btn.setTextColor(Color.WHITE);
+            previous = view.getId();
+            //changeColors(view.getId());
+
             //update for chart wanted
             idChart = view.getId();
+            btn = (Button)findViewById(idChart);
+            btn.setTextColor(Color.parseColor("#00bfff"));
+
+
             UpdateVolChart U1 = new UpdateVolChart();
             U1.execute();
             new UpdateVolChart().execute();
             new UpdateChart().execute();
         }
+
+    }
+
+    public void changeColors(int id)
+    {
+        //clicked.setTextColor(DefaultButtonColor);
+        //clicked = (Button) findViewById(id);
+        //clicked.setBackgroundColor(Color.parseColor("#00bfff"));
 
     }
 
@@ -135,35 +161,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.d("current5", "" + maxPrice);
         Log.d("current6", "" + minPrice);*/
 
-            //left
-            TextView txt = (TextView) findViewById(R.id.current);
-            txt.setText("$" + String.format("%.2f", currentPrice));
-            txt = (TextView) findViewById(R.id.percent);
-            if (percentdiff > 0) {
-                if (percentdiff >= 100) {
-                    txt.setText("  (" + String.format("%.2f", percentdiff) + "%)");
-                }
-                else {
-                    txt.setText("(" + String.format("%.2f", percentdiff)+"%)");
-                }
-                txt.setTextColor(Color.GREEN);
-            }
 
-            else
-            {
-                txt.setTextColor(Color.RED);
+        //left
+        TextView txt = (TextView) findViewById(R.id.current);
+        txt.setText("$" + String.format("%.2f", currentPrice));
+        txt = (TextView) findViewById(R.id.percent);
+        if (percentdiff > 0) {
+            if (percentdiff >= 100) {
+                txt.setText("  (" + String.format("%.2f", percentdiff) + "%)");
+            }
+            else {
                 txt.setText("(" + String.format("%.2f", percentdiff)+"%)");
             }
-            txt = (TextView) findViewById(R.id.difference);
-            txt.setText("Change: $" + String.format("%.2f", diff));
-            txt = (TextView) findViewById(R.id.volume);
-            txt.setText("24h Vol: $" + NumberFormat.getInstance().format(volume));
+            txt.setTextColor(Color.GREEN);
+        }
 
-            //right
-            txt = (TextView) findViewById(R.id.high);
-            txt.setText("Max: $" + String.format("%.2f", maxPrice) );
-            txt = (TextView) findViewById(R.id.low);
-            txt.setText("Min: $" + String.format("%.2f", minPrice));
+        else
+        {
+            txt.setTextColor(Color.RED);
+            txt.setText("(" + String.format("%.2f", percentdiff)+"%)");
+        }
+        txt = (TextView) findViewById(R.id.difference);
+        txt.setText("Change: $" + String.format("%.2f", diff));
+        txt = (TextView) findViewById(R.id.volume);
+        txt.setText("24h Vol: $" + NumberFormat.getInstance().format(volume));
+
+        //right
+        txt = (TextView) findViewById(R.id.high);
+        txt.setText("Max: $" + String.format("%.2f", maxPrice) );
+        txt = (TextView) findViewById(R.id.low);
+        txt.setText("Min: $" + String.format("%.2f", minPrice));
 
 
 
@@ -298,7 +325,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             if (charts.containsKey(idChart))
             {
                 LineChart chart = (LineChart) findViewById(R.id.chart);
-                chart.setDrawGridBackground(true);
                 chart.setData(charts.get(idChart).getDataSet());
 
 
@@ -307,23 +333,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 volChart.setData(currentBarData);
                 volChart.invalidate();
                 chart.invalidate();
+
                 currentPrice = charts.get(idChart).getCurrentPrice();
                 minPrice = charts.get(idChart).getMin();
                 maxPrice = charts.get(idChart).getMax();
                 volume = charts.get(idChart).getVolume();
                 diff = charts.get(idChart).getDiff();
                 percentdiff = charts.get(idChart).getPercentdiff();
+
                 BTCInfo();
             }
             else {
                 LineChart chart = (LineChart) findViewById(R.id.chart);
+
+                //chart.setBackgroundColor(Color.WHITE);
+
                 Legend legend = chart.getLegend();
                 legend.setEnabled(false);
 
                 Description D = new Description();
                 D.setText("");
+
                 chart.setDescription(D);
                 //chart.setGridBackgroundColor(Color.RED);
+
                 chart.getXAxis().setDrawGridLines(false);
                 chart.getAxisLeft().setDrawGridLines(false);
                 chart.getAxisRight().setDrawGridLines(false);
@@ -354,7 +387,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 dataSet.setLineWidth(1.3f);
                 dataSet.setDrawCircles(false);
                 //chart.setMaxVisibleValueCount(5);
-                dataSet.setColor(Color.BLUE);
+                dataSet.setColor(Color.parseColor("#00bfff"));
                 //dataSet.setCircleColor(Color.BLACK);
                 //dataSet.setValueTextColor(Color.RED); // styling, ...
 
@@ -364,10 +397,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 chart.fitScreen();
                 YAxis left = chart.getAxisLeft();
                 left.setEnabled(false);
+                YAxis right = chart.getAxisRight();
+                right.setTextColor(Color.WHITE);
                 //chart.setDrawGridBackground(false);
                 BarChart volChart = (BarChart) findViewById(R.id.volchart);
                 volChart.setData(currentBarData);
                 volChart.invalidate();
+
+                DayAxisValueFormatter formatterX = new DayAxisValueFormatter(chart);
+                XAxis xAxis = chart.getXAxis();
+                xAxis.setValueFormatter(formatterX);
+                xAxis.setTextColor(Color.WHITE);
                 chart.invalidate(); // refresh
 
                 diff = currentPrice - ret[0];
@@ -446,6 +486,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             else {
                 BarChart chart = (BarChart) findViewById(R.id.volchart);
 
+                //chart.setBackgroundColor(Color.WHITE);
+
                 Legend legend = chart.getLegend();
                 legend.setEnabled(false);
 
@@ -470,12 +512,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
                 UpdatePriceData x = new UpdatePriceData();
-               // entries.add(new BarEntry(ret.length, volume));
+                // entries.add(new BarEntry(ret.length, volume));
 
                 BarDataSet dataSet = new BarDataSet(entries, "Label"); // add entries to
 
                 dataSet.setDrawValues(false);
-                dataSet.setColor(Color.BLUE);
+                dataSet.setColor(Color.parseColor("#00bfff"));
                 //dataSet.setCircleColor(Color.BLACK);
                 //dataSet.setValueTextColor(Color.RED); // styling, ...
 
@@ -483,12 +525,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 YAxis left = chart.getAxisLeft();
                 left.setEnabled(false);
 
+                XAxis xAxis = chart.getXAxis();
+                xAxis.setTextColor(Color.WHITE);
+
 
                 YAxis yAxis = chart.getAxisRight();
                 yAxis.setGranularity(1f);
-                LargeValueFormatter formatter = new LargeValueFormatter();
+                yAxis.setTextColor(Color.WHITE);
+
+                LargeValueFormatter formatterY = new LargeValueFormatter();
                 //formatter.setAppendix();
-                yAxis.setValueFormatter(formatter);
+                yAxis.setValueFormatter(formatterY);
+
 
                 currentBarData = barData;
             }

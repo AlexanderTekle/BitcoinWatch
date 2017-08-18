@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
+    android:background="#000000"
     tools:context="com.example.alexandertekle.blockchainpractice.MainActivity">
 
     <ScrollView
@@ -50,7 +51,9 @@
                     android:layout_marginRight="-55dp"
                     android:paddingBottom="15dp"
                     android:paddingTop="15dp"
-                />
+                    android:textColor="#fff"
+
+                    />
 
                 <TextView
                     android:id="@+id/percent"
@@ -63,6 +66,8 @@
                     android:layout_marginLeft="-55dp"
                     android:paddingBottom="15dp"
                     android:paddingTop="15dp"
+                    android:textColor="#fff"
+
                     />
             </LinearLayout>
 
@@ -86,6 +91,7 @@
                         android:text="Difference"
                         android:textSize="20dp"
                         android:gravity="center"
+                        android:textColor="#fff"
                         />
 
                     <TextView
@@ -95,6 +101,7 @@
                         android:text="24h Volume"
                         android:textSize="20dp"
                         android:gravity="center"
+                        android:textColor="#fff"
 
                         />
                 </LinearLayout>
@@ -115,6 +122,8 @@
                         android:layout_height="0dip"
                         android:textSize="20dp"
                         android:gravity="center"
+                        android:textColor="#fff"
+
                         />
 
                     <TextView
@@ -125,6 +134,8 @@
                         android:layout_height="0dip"
                         android:textSize="20dp"
                         android:gravity="center"
+                        android:textColor="#fff"
+
                         />
                 </LinearLayout>
             </LinearLayout>
@@ -149,42 +160,54 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="1D" />
+                    android:text="1D"
+                    android:background="@android:color/transparent"
+                    android:textColor="#00bfff"/>
 
                 <Button
                     android:id="@+id/oneweek"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="1W" />
+                    android:text="1W"
+                    android:textColor="#fff"
+                    android:background="@android:color/transparent"/>
 
                 <Button
                     android:id="@+id/onemonth"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="1M" />
+                    android:text="1M"
+                    android:textColor="#fff"
+                    android:background="@android:color/transparent"/>
 
                 <Button
                     android:id="@+id/threemonths"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="3M" />
+                    android:text="3M"
+                    android:textColor="#fff"
+                    android:background="@android:color/transparent"/>
 
                 <Button
                     android:id="@+id/sixmonths"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="6M" />
+                    android:text="6M"
+                    android:textColor="#fff"
+                    android:background="@android:color/transparent"/>
 
                 <Button
                     android:id="@+id/oneyear"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="1Y" />
+                    android:text="1Y"
+                    android:textColor="#fff"
+                    android:background="@android:color/transparent"/>
 
 
             </LinearLayout>
@@ -195,7 +218,8 @@
                 android:layout_height="250dp"
                 android:layout_weight="1.25"
                 tools:layout_editor_absoluteX="8dp"
-                tools:layout_editor_absoluteY="8dp" />
+                tools:layout_editor_absoluteY="8dp"
+                />
             <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/volchart"
                 android:layout_width="fill_parent"
@@ -208,93 +232,93 @@
     </ScrollView>
 
 </android.support.constraint.ConstraintLayout>
-            <!--
-            <TextView
-                android:id="@+id/sourcesView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="Sources" />-->
-<!--
-            <Button
-                android:id="@+id/Source1"
-                style="@style/Base.Widget.AppCompat.Button.Borderless"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="Source 1"/>
-            <Button
-                android:id="@+id/Source2"
-                style="@style/Base.Widget.AppCompat.Button.Borderless"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="Source 2"/>
-            <Button
-                android:id="@+id/Source3"
-                style="@style/Base.Widget.AppCompat.Button.Borderless"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="Source 3"/>
-            <Button
-                android:id="@+id/Source4"
-                style="@style/Base.Widget.AppCompat.Button.Borderless"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="Source 4"/>
-            <Button
-                android:id="@+id/Source5"
-                style="@style/Base.Widget.AppCompat.Button.Borderless"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="Source 5"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
+    <!--
+    <TextView
+        android:id="@+id/sourcesView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Sources" />-->
+    <!--
                 <Button
-                    android:id="@+id/oneweek"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/Source1"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="1W" />
-
+                    android:layout_gravity="center_horizontal"
+                    android:text="Source 1"/>
                 <Button
-                    android:id="@+id/onemonth"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/Source2"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="1M" />
-
+                    android:layout_gravity="center_horizontal"
+                    android:text="Source 2"/>
                 <Button
-                    android:id="@+id/threemonths"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/Source3"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="3M" />
-
+                    android:layout_gravity="center_horizontal"
+                    android:text="Source 3"/>
                 <Button
-                    android:id="@+id/sixmonths"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/Source4"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="6M" />
-
+                    android:layout_gravity="center_horizontal"
+                    android:text="Source 4"/>
                 <Button
-                    android:id="@+id/oneyear"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/Source5"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="1Y" />
+                    android:layout_gravity="center_horizontal"
+                    android:text="Source 5"/>
 
-                <Button
-                    android:id="@+id/threeyears"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="3Y" />-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/oneweek"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="1W" />
+
+                    <Button
+                        android:id="@+id/onemonth"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="1M" />
+
+                    <Button
+                        android:id="@+id/threemonths"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="3M" />
+
+                    <Button
+                        android:id="@+id/sixmonths"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="6M" />
+
+                    <Button
+                        android:id="@+id/oneyear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="1Y" />
+
+                    <Button
+                        android:id="@+id/threeyears"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="3Y" />-->
