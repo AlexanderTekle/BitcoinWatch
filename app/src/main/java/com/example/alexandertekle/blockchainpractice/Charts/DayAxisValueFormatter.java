@@ -89,7 +89,6 @@ public class DayAxisValueFormatter implements IAxisValueFormatter
                     appendix = "st";
                     break;
             }
-
             return dayOfMonth == 0 ? "" : dayOfMonth + appendix + " " + monthName;
         }
     }
