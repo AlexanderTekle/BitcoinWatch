@@ -326,6 +326,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             {
                 LineChart chart = (LineChart) findViewById(R.id.chart);
                 chart.setData(charts.get(idChart).getDataSet());
+                XAxis xAxis = chart.getXAxis();
+
+                if (idChart == R.id.oneday)
+                {
+                    TimeAxisValueFormatter formatterX = new TimeAxisValueFormatter();
+                    xAxis.setValueFormatter(formatterX);
+                }
+                else {
+                    DateAxisValueFormatter formatterX = new DateAxisValueFormatter();
+                    xAxis.setValueFormatter(formatterX);
+                }
 
 
 
@@ -365,21 +376,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 List<Entry> entries = new ArrayList<Entry>();
                 //YAxis yaxis = chart.getAxisLeft();
                 //yaxis.setAxisMinimum(1000f);
-                float min = ret[0];
-                float max = ret[0];
-                entries.add(new Entry(0, ret[0]));
-                for (int i = 1; i < ret.length; i++) {
-                    entries.add(new Entry(i, ret[i]));
-                    if (ret[i] < min)
-                        min = ret[i];
-                    else if (ret[i] > max)
-                        max = ret[i];
+                float min = ret[1];
+                float max = ret[1];
+                //entries.add(new Entry(0, ret[0]));
+                for (int i = 0; i < ret.length; i+=2) {
+                    Log.d("now", i+ ". " + ret[i] + " " + ret[i+1]);
+                    entries.add(new Entry(ret[i], ret[i+1]));
+                    if (ret[i+1] < min)
+                        min = ret[i+1];
+                    else if (ret[i+1] > max)
+                        max = ret[i+1];
                 }
                 minPrice = min;
                 maxPrice = max;
 
                 UpdatePriceData x = new UpdatePriceData();
-                entries.add(new Entry(ret.length, currentPrice));
+                //entries.add(new Entry(ret.length, currentPrice));
 
                 LineDataSet dataSet = new LineDataSet(entries, "Label"); // add entries to
                 dataSet.setDrawValues(false);
@@ -403,18 +415,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 BarChart volChart = (BarChart) findViewById(R.id.volchart);
                 volChart.setData(currentBarData);
                 volChart.invalidate();
-
-                DayAxisValueFormatter formatterX = new DayAxisValueFormatter(chart);
                 XAxis xAxis = chart.getXAxis();
-                xAxis.setValueFormatter(formatterX);
+                if (idChart == R.id.oneday)
+                {
+                    TimeAxisValueFormatter formatterX = new TimeAxisValueFormatter();
+                    xAxis.setValueFormatter(formatterX);
+                }
+                else {
+                    DateAxisValueFormatter formatterX = new DateAxisValueFormatter();
+                    xAxis.setValueFormatter(formatterX);
+                }
+                //xAxis.setAxisMaximum(1500000);
                 xAxis.setTextColor(Color.WHITE);
                 chart.invalidate(); // refresh
+                //Log.d("diff", currentP)
 
-                diff = currentPrice - ret[0];
-                percentdiff = diff / ret[0] * 100;
+                diff = currentPrice - ret[1];
+                percentdiff = diff / ret[1] * 100;
 
                 charts.put(idChart, new ChartWithData(minPrice, maxPrice, lineData, currentBarData,ret[0], currentPrice, diff, percentdiff, volume));
                 BTCInfo();
+                for (int i = 0; i < entries.size(); i++)
+                {
+                    Log.d("here", entries.get(i).getX() + " " + entries.get(i).getY());
+                }
+
             }
         }
     }
@@ -526,7 +551,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 left.setEnabled(false);
 
                 XAxis xAxis = chart.getXAxis();
-                xAxis.setTextColor(Color.WHITE);
+                xAxis.setEnabled(false);
+                //xAxis.setTextColor(Color.WHITE);
 
 
                 YAxis yAxis = chart.getAxisRight();

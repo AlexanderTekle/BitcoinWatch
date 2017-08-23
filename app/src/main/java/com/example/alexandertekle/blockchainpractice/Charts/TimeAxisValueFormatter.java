@@ -11,10 +11,10 @@ import java.util.Date;
  * Created by alexandertekle on 8/22/17.
  */
 
-public class DateAxisValueFormatter implements IAxisValueFormatter {
-    DateFormat sdf = new SimpleDateFormat("MM/dd");
+public class TimeAxisValueFormatter implements IAxisValueFormatter {
+    DateFormat sdf = new SimpleDateFormat("HH:mm");
 
-    public DateAxisValueFormatter()
+    public TimeAxisValueFormatter()
     {
 
     }

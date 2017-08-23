@@ -60,7 +60,7 @@ public class FirstChart {
                 url = "https://min-api.cryptocompare.com/data/histoday?fsym=BTC&tsym=USD&limit=" + (amount) + "&aggregate=1&e=CCCAGG";
         }
 
-        float values[] = new float[amount];
+        float values[] = new float[amount*2];
 
         HttpClient client = new DefaultHttpClient();
         HttpGet request = new HttpGet(url);
@@ -97,7 +97,11 @@ public class FirstChart {
 
 
         String ret = "";
-        int i = 0;/*
+        int i = 0;
+        int q = 0;
+
+        /*
+
         if (amount > 500)
         {
             while (i < amount - 1) {
@@ -109,11 +113,17 @@ public class FirstChart {
             }
         }
         else {*/
-            while (i < amount) {
-                JSONObject daily = data.getJSONObject(i);
-                values[i] = Float.parseFloat(daily.getString("close"));
+        Log.d("amt", "" + (amount*2 -1));
+            while (i < (amount*2)) {
 
-                i++;
+                JSONObject daily = data.getJSONObject(q);
+                values[i] = Float.parseFloat(daily.getString("time"));
+                values[i+1] = Float.parseFloat(daily.getString("close"));
+                Log.d("here", i + " " + values[i]);
+                Log.d("here", (i+1) + " " + values[i+1]);
+
+                q++;
+                i+=2;
             }
       //  }
         return values;
