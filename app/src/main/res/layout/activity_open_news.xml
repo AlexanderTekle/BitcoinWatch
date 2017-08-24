@@ -4,5 +4,5 @@
     android:layout_width = "match_parent"
     android:layout_height="match_parent"
     android:id="@+id/web"
-    tools:context="com.example.alexandertekle.blockchainpractice.OpenNewsActivity">
+    tools:context="bitcoin.watch.alexandertekle.blockchainpractice.OpenNewsActivity">
 </WebView>
