@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.alexandertekle.blockchainpractice", appContext.getPackageName());
+        assertEquals("bitcoin.watch.alexandertekle.blockchainpractice", appContext.getPackageName());
     }
 }
