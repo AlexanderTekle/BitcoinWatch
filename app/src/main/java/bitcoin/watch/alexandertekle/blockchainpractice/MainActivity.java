@@ -165,8 +165,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //left
         TextView txt = (TextView) findViewById(R.id.current);
+        txt.setTextSize(10 * getResources().getDisplayMetrics().density);
         txt.setText("$" + String.format("%.2f", currentPrice));
         txt = (TextView) findViewById(R.id.percent);
+        txt.setTextSize(10 * getResources().getDisplayMetrics().density);
         if (percentdiff > 0) {
             if (percentdiff >= 100) {
                 txt.setText("  (" + String.format("%.2f", percentdiff) + "%)");
@@ -183,14 +185,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             txt.setText("(" + String.format("%.2f", percentdiff)+"%)");
         }
         txt = (TextView) findViewById(R.id.difference);
+        txt.setTextSize(6 * getResources().getDisplayMetrics().density);
         txt.setText("Change: $" + String.format("%.2f", diff));
         txt = (TextView) findViewById(R.id.volume);
+        txt.setTextSize(6 * getResources().getDisplayMetrics().density);
         txt.setText("24h Vol: $" + NumberFormat.getInstance().format(volume));
 
         //right
         txt = (TextView) findViewById(R.id.high);
+        txt.setTextSize(6 * getResources().getDisplayMetrics().density);
         txt.setText("Max: $" + String.format("%.2f", maxPrice) );
         txt = (TextView) findViewById(R.id.low);
+        txt.setTextSize(6 * getResources().getDisplayMetrics().density);
         txt.setText("Min: $" + String.format("%.2f", minPrice));
 
 
